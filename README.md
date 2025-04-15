@@ -32,7 +32,7 @@ helm upgrade --install --atomic --create-namespace \
     --set ingress.enabled=true \
     --set ingress.host=tsa.dev.yourcompany.tld \
     --set app.signature.signatureAlgorithmOid=1.3.101.112 \
-    --set app.signature.identity="common_name=Demo TSA,organizational_unit_name=Your Company,country_name=EU,rfc822_name=no-reply@yourcompany.tld" \
+    --set app.signature.identity="common_name=Demo TSA\,organizational_unit_name=Your Company\,country_name=EU\,rfc822_name=no-reply@yourcompany.tld" \
     pitsa mt-pitsa/pitsa
 ```
 
