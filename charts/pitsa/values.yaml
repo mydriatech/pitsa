@@ -1,0 +1,190 @@
+# PiTSA default configuration
+app:
+  # Time source configuration and tolerance.
+  time:
+    # NTP host in the form `hostname:port`. An empty string will disable NTP.
+    # By default, it will use the side-car NTP server container.
+    ntpHost: "127.0.0.1:123"
+    # How long to wait for an NTP response before considering it lost.
+    ntpTimeoutMicros: "25000"
+    # Estimated worst case accuracy of the local system time.
+    systemTimeAccuracyMicros: "300000000"
+    # How often to compare the local time with the NTP time source.
+    ntpSyncIntervalMicros: "5000000"
+    # The worst time source accuracy that can be tolerated.
+    tolerableAccuracyMicros: "500000"
+    # Query the NTP server for every time stamp request.
+    ntpQueryForEveryRequest: true
+  # Time stamp response signature configuration.
+  signature:
+    # The TSA policy
+    #
+    # See https://datatracker.ietf.org/doc/html/rfc3628.
+    #
+    # Defaults to the "any" policy from RFC5280, which in that context delegates
+    # the policy upward the hierarchy. This could make sense for testing and
+    # internal uses.
+    policy: 2.5.29.32.0
+    # Signing certificate enrollment provider.
+    # See https://github.com/mydriatech/upkit-leafops .
+    provider: "self_signed"
+    # Trust anchor for enrollment
+    trust: ""
+    # Certificate type in the context of the choosen provider.
+    template: "timestamping"
+    # Enrollment credentials in the context of the choosen provider.
+    credentials: ""
+    # Requested identity fields for the time-stamp signing certificate.
+    #
+    #   https://www.rfc-editor.org/rfc/rfc3628.html#section-7.3.1.h:
+    #   The time-stamp token shall include:
+    #   -  where applicable, an identifier for the country in which the TSA is
+    #      established;
+    #   -  an identifier for the TSA;
+    #   -  an identifier for the unit which issues the time-stamps.
+    #
+    # To avoid internal information leakage, you could define/assign the
+    # time-stamping unit (TSU) identifier as the signing certificate's serial
+    # number.
+    #
+    # The issuer and serial number is logged after issuance by the instance.
+    identity: "common_name=Demo self-signed TSA,organizational_unit_name=MydriaTech AB,country_name=SE,rfc822_name=no-reply@example.com"
+    # Time-Stamp signature algorithm that will be used for key-pair generation.
+    #
+    # A few examples of algorithm OIDs:
+    #   ed25519:      1.3.101.112
+    #   ML-DSA-65:    2.16.840.1.101.3.4.3.18
+    signatureAlgorithmOid: 2.16.840.1.101.3.4.3.18
+    # Time-Stamp digest algorithm that will be used for hashing the timestamp
+    # token.
+    #
+    # (This is unrelated to the message-imprint supplied by the client.)
+    #
+    # A few examples of algorithm OIDs:
+    #   SHA384:       2.16.840.1.101.3.4.2.2
+    #   SHA3-512:     2.16.840.1.101.3.4.2.10
+    digestAlgorithmOid: 2.16.840.1.101.3.4.2.10
+
+# Side-car NTP server configuration.
+ntp:
+  enabled: true
+  image:
+    repository: docker.io/cturra/ntp
+    pullPolicy: Always
+    tag: "latest"
+  config:
+    # A comma separated list of NTP upstream servers.
+    servers: "time.cloudflare.com"
+    # Network Time Security
+    nts: true
+
+image:
+  repository: ghcr.io/mydriatech/pitsa
+  # This sets the pull policy for images.
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 8080
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  host: pitsa.local
+  path: /
+  pathType: ImplementationSpecific
+  tls: {}
+  #  secretName: pitsa-tls
+  #  host: pitsa.local
+
+# Requires Gateway API resources and suitable controller installed within the cluster
+# (see: https://gateway-api.sigs.k8s.io/guides/)
+#
+# NOTE: This is experimental configuration.
+httpRoute:
+  # HTTPRoute enabled.
+  enabled: false
+  # HTTPRoute annotations.
+  annotations: {}
+  # Which Gateways this Route is attached to.
+  parentRefs:
+  - name: gateway
+    sectionName: http
+    # namespace: default
+  # Hostnames matching HTTP header.
+  hostname: pitsa.local
+  # List of rules and filters applied.
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    filters:
+      - type: URLRewrite
+        urlRewrite:
+          path:
+            type: ReplacePrefixMatch
+            replacePrefixMatch: /api/v1/tsp
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
