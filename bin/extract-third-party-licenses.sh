@@ -34,6 +34,7 @@ cargo tree --target x86_64-unknown-linux-musl --prefix none --edges no-build --n
     while read -r line ; do
         mkdir "$targetDirName/$line"
         cp "$srcDirName/$line"/LICENSE* "$targetDirName/$line/"
+        cp "$srcDirName/$line"/LICENCE* "$targetDirName/$line/" 2>/dev/null
         cp "$srcDirName/$line"/COPYRIGHT* "$targetDirName/$line/" 2>/dev/null
         cp "$srcDirName/$line"/COPYING* "$targetDirName/$line/" 2>/dev/null
     done
