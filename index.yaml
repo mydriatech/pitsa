@@ -2,6 +2,17 @@ apiVersion: v1
 entries:
   pitsa:
   - apiVersion: v2
+    appVersion: 0.1.2
+    created: "2025-04-15T14:03:13.992847274Z"
+    description: PiTSA - Pico Time-Stamp Authority
+    digest: bb0dae2791926c806f0852ed2bfa977607790e0b1a8dd26e4a86da829f7c7ffd
+    home: https://github.com/mydriatech/pitsa
+    name: pitsa
+    type: application
+    urls:
+    - https://github.com/mydriatech/pitsa/releases/download/pitsa-0.1.2/pitsa-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     appVersion: 0.1.1
     created: "2025-04-15T12:21:14.537165504Z"
     description: PiTSA - Pico Time-Stamp Authority
@@ -12,4 +23,4 @@ entries:
     urls:
     - https://github.com/mydriatech/pitsa/releases/download/pitsa-0.1.1/pitsa-0.1.1.tgz
     version: 0.1.1
-generated: "2025-04-15T12:21:14.537170333Z"
+generated: "2025-04-15T14:03:13.992858906Z"
