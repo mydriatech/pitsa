@@ -111,20 +111,12 @@ spec:
             value: "{{ .Values.app.time.ntpQueryForEveryRequest }}"
           - name: PITSA_SIGN_POLICY
             value: "{{ .Values.app.signature.policy }}"
-          - name: PITSA_SIGN_PROVIDER
-            value: "{{ .Values.app.signature.provider }}"
-          - name: PITSA_SIGN_TRUST
-            value: "{{ .Values.app.signature.trust }}"
-          - name: PITSA_SIGN_TEMPLATE
-            value: "{{ .Values.app.signature.template }}"
-          - name: PITSA_SIGN_CREDENTIALS
-            value: "{{ .Values.app.signature.credentials }}"
-          - name: PITSA_SIGN_IDENTITY
-            value: "{{ .Values.app.signature.identity }}"
           - name: PITSA_SIGN_SIGNATURE
             value: "{{ .Values.app.signature.signatureAlgorithmOid }}"
           - name: PITSA_SIGN_DIGEST
             value: "{{ .Values.app.signature.digestAlgorithmOid }}"
+          - name: PITSA_SIGN_ENPROV
+            value: "/secrets/enprov.json"
           - name: PITSA_CONTEXT_POD
             valueFrom:
               fieldRef:
@@ -137,8 +129,18 @@ spec:
                 fieldPath: metadata.namespace
           #- name: RUST_BACKTRACE
           #  value: "full"
-      {{- if .Values.ntp.enabled }}
+          volumeMounts:
+          - name: enprov-secret
+            mountPath: "/secrets"
+            readOnly: true
       volumes:
+      - name: enprov-secret
+        secret:
+          secretName: "{{ include "pitsa.fullname" . }}-enprov"
+          items:
+          - key: enprov.json
+            path: enprov.json
+      {{- if .Values.ntp.enabled }}
       - name: tmpfs-etc-chrony
         emptyDir:
           medium: Memory

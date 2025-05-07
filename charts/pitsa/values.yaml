@@ -25,30 +25,6 @@ app:
     # the policy upward the hierarchy. This could make sense for testing and
     # internal uses.
     policy: 2.5.29.32.0
-    # Signing certificate enrollment provider.
-    # See https://github.com/mydriatech/upkit-leafops .
-    provider: "self_signed"
-    # Trust anchor for enrollment
-    trust: ""
-    # Certificate type in the context of the choosen provider.
-    template: "timestamping"
-    # Enrollment credentials in the context of the choosen provider.
-    credentials: ""
-    # Requested identity fields for the time-stamp signing certificate.
-    #
-    #   https://www.rfc-editor.org/rfc/rfc3628.html#section-7.3.1.h:
-    #   The time-stamp token shall include:
-    #   -  where applicable, an identifier for the country in which the TSA is
-    #      established;
-    #   -  an identifier for the TSA;
-    #   -  an identifier for the unit which issues the time-stamps.
-    #
-    # To avoid internal information leakage, you could define/assign the
-    # time-stamping unit (TSU) identifier as the signing certificate's serial
-    # number.
-    #
-    # The issuer and serial number is logged after issuance by the instance.
-    identity: "common_name=Demo self-signed TSA,organizational_unit_name=MydriaTech AB,country_name=SE,rfc822_name=no-reply@example.com"
     # Time-Stamp signature algorithm that will be used for key-pair generation.
     #
     # A few examples of algorithm OIDs:
@@ -64,6 +40,54 @@ app:
     #   SHA384:       2.16.840.1.101.3.4.2.2
     #   SHA3-512:     2.16.840.1.101.3.4.2.10
     digestAlgorithmOid: 2.16.840.1.101.3.4.2.10
+    #
+    # Signing certificate enrollment provider.
+    # See https://github.com/mydriatech/upkit-leafops .
+    #
+    enprov:
+      # Default self-signed provider for testing.
+      provider: self_signed
+      template: timestamping
+      # Requested identity fields for the time-stamp signing certificate.
+      #
+      # https://www.rfc-editor.org/rfc/rfc3628.html#section-7.3.1.h:
+      #   The time-stamp token shall include:
+      #   -  where applicable, an identifier for the country in which the TSA is
+      #      established;
+      #   -  an identifier for the TSA;
+      #   -  an identifier for the unit which issues the time-stamps.
+      #
+      # To avoid internal information leakage, you could define/assign the
+      # time-stamping unit (TSU) identifier as the signing certificate's serial
+      # number.
+      #
+      # The issuer and serial number is logged after issuance by the instance
+      # which enables identification of the TSU Pod by checking the logs.
+      identity:
+        - name: common_name
+          value: Dummy self-signed TSA unit cert
+        - name: country_name
+          value: SE
+        - name: rfc822_name
+          value: no-reply@example.com
+      # Certificate Management Protocol (CMP) provider
+      #provider: cmp
+      #template: timestamping
+      #identity:
+      #  - name: common_name
+      #    value: The greatest little TSA unit
+      #  - name: organization_name
+      #    value: MydriaTech AB
+      #  - name: country_name
+      #    value: SE
+      #  - name: rfc822_name
+      #    value: no-reply@example.com
+      #service:
+      #  # A trailing slash and the value of 'template' will be appended.
+      #  base_url: https://ca.example.com/.well-known/cmp/p
+      #  #base_url: https://ejbca-ce.example.com/ejbca/publicweb/cmp
+      #credentials:
+      #  shared_secret: foobar123
 
 # Side-car NTP server configuration.
 ntp:

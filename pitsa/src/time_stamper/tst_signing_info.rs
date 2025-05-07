@@ -24,7 +24,6 @@ use tyst::Tyst;
 use upkit_common::x509::cert::parse::CertificateParser;
 use upkit_common::x509::tsp::build::RevocationInfoVariant;
 use upkit_common::x509::tsp::build::TimeStampTokenSigner;
-use upkit_leafops::enprov::CertificateEnrollmentOptions;
 use upkit_leafops::enprov::CertificateEnrollmentProvider;
 use upkit_leafops::enprov::EnrollmentProvider;
 use upkit_leafops::enprov::MonitoredChain;
@@ -63,7 +62,6 @@ pub struct TimeStampTokenSigningInfo {
     app_config: Arc<AppConfig>,
     cep: Arc<CertificateEnrollmentProvider>,
     current_signing_info: SkipMap<(), Arc<CurrentSigningInfo>>,
-    certificate_enrollment_options: CertificateEnrollmentOptions,
     certificate_signature_algo_oid: Vec<u32>,
     supported_digest_algorithm_oid: Vec<u32>,
 }
@@ -73,17 +71,10 @@ impl TimeStampTokenSigningInfo {
     pub async fn new(app_config: &Arc<AppConfig>) -> Arc<Self> {
         Arc::new(Self {
             app_config: Arc::clone(app_config),
-            cep: CertificateEnrollmentProvider::new(
-                &app_config.sign.provider(),
-                &app_config.sign.trust(),
+            cep: CertificateEnrollmentProvider::with_options(
+                &app_config.sign.enrollment_provider_options(),
             ),
             current_signing_info: SkipMap::default(),
-            certificate_enrollment_options: CertificateEnrollmentOptions {
-                template: app_config.sign.template(),
-                credentials: app_config.sign.credentials(),
-                identity: app_config.sign.identity(),
-            },
-            // TODO
             certificate_signature_algo_oid: app_config.sign.signature_algorithm_oid(),
             supported_digest_algorithm_oid: app_config.sign.digest_algorithm_oid(),
         })
@@ -134,7 +125,6 @@ impl TimeStampTokenSigningInfo {
                     &self.certificate_signature_algo_oid,
                     public_key.as_ref(),
                     private_key.as_ref(),
-                    &self.certificate_enrollment_options,
                 );
                 let signing_certificate_chain = MonitoredChain::new(
                     signing_certificate_chain,
