@@ -8,6 +8,13 @@ members = [
     "pitsa",
 ]
 
+[workspace.package]
+edition = "2021"
+license = "Apache-2.0 WITH AdditionRef-FWM-Exception-1.0.0"
+version = "0.0.0"
+repository = "https://github.com/mydriatech/pitsa.git"
+publish = false
+
 #[profile.dev]
 #opt-level = 1
 #lto = "thin"
@@ -36,6 +43,7 @@ codegen-units = 1
 tyst = { git = "https://github.com/mydriatech/tyst.git", branch = "main" }
 tyst_api_rest_health = { git = "https://github.com/mydriatech/tyst.git", branch = "main" }
 
+# PKI utility libraries
 upkit_common = { git = "https://github.com/mydriatech/upkit-common.git", branch = "main" }
 upkit_leafops = { git = "https://github.com/mydriatech/upkit-leafops.git", branch = "main" }
 

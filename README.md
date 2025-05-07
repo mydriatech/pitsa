@@ -32,7 +32,6 @@ helm upgrade --install --atomic --create-namespace \
     --set ingress.enabled=true \
     --set ingress.host=tsa.dev.yourcompany.tld \
     --set app.signature.signatureAlgorithmOid=1.3.101.112 \
-    --set app.signature.identity="common_name=Demo TSA\,organizational_unit_name=Your Company\,country_name=EU\,rfc822_name=no-reply@yourcompany.tld" \
     pitsa mt-pitsa/pitsa
 ```
 
@@ -46,7 +45,7 @@ openssl ts -query -nonce -cert -data README.md -sha3-512 -out request.tsq
 openssl ts -query -in request.tsq -text
 
 # Send generated request to the TSA
-curl -H 'Content-Type: application/timestamp-query' --data-binary @request.tsq http://tsa.dev.yourcompany.tld -o response.tsr
+curl -H 'Content-Type: application/timestamp-query' --data-binary @request.tsq http://tsa.dev.yourcompany.tld/api/v1/tsp -o response.tsr
 
 # Show time-stamp response returned by the TSA
 openssl ts -reply -in response.tsr -text
@@ -63,6 +62,12 @@ openssl ts -reply -in response.tsr -token_out | openssl pkcs7 -inform der -print
 ```text
 helm delete --namespace pitsa-demo pitsa
 ```
+
+## Certificate enrollment in production
+
+See [EJBCA-integration.md](docs/EJBCA-integration.md) for an example of how to
+automatically enroll for Time-Stamping certificates from a existing PKI.
+
 
 ## Implementation
 

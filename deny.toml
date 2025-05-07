@@ -29,7 +29,8 @@ exceptions = [
     #{ allow = ["BSD-3-Clause"], crate = "encoding_rs" },
     #{ allow = ["Unicode-DFS-2016"], crate = "unicode-ident" },
     #{ allow = ["OpenSSL"], crate = "ring" },
-    { allow = ["MPL-2.0"], crate = "webpki-roots" },
+    #{ allow = ["MPL-2.0"], crate = "webpki-roots" },
+    { allow = ["CDLA-Permissive-2.0"], crate = "webpki-roots" },
     { allow = ["Zlib"], crate = "foldhash" },
 ]
 
