@@ -29,7 +29,7 @@ use conf::AppConfig;
 use std::process::ExitCode;
 use std::sync::Arc;
 pub use time_stamper::TimeStamper;
-use tokio::signal::unix::{signal, SignalKind};
+use tokio::signal::unix::{SignalKind, signal};
 use tyst_api_rest_health::AppHealth;
 
 /// Async code entry point.

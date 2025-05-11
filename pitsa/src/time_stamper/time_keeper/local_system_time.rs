@@ -19,10 +19,10 @@
 
 use super::TimeKeeper;
 use sntpc::NtpResult;
+use std::sync::Arc;
 use std::sync::atomic::AtomicI64;
 use std::sync::atomic::AtomicU64;
 use std::sync::atomic::Ordering;
-use std::sync::Arc;
 
 /** Local system time and offset with accuracy measurements.
 

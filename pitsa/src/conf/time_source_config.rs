@@ -17,8 +17,8 @@
 
 //! Parsing of configuration for the time source.
 
-use config::builder::BuilderState;
 use config::ConfigBuilder;
+use config::builder::BuilderState;
 use serde::{Deserialize, Serialize};
 
 use super::AppConfigDefaults;

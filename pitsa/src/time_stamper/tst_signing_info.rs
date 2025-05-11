@@ -19,8 +19,8 @@
 
 use crossbeam_skiplist::SkipMap;
 use std::sync::Arc;
-use tyst::traits::se::PrivateKey;
 use tyst::Tyst;
+use tyst::traits::se::PrivateKey;
 use upkit_common::x509::cert::parse::CertificateParser;
 use upkit_common::x509::tsp::build::RevocationInfoVariant;
 use upkit_common::x509::tsp::build::TimeStampTokenSigner;
@@ -144,7 +144,11 @@ impl TimeStampTokenSigningInfo {
                         .unwrap_or("unknown".to_string());
                     log::info!(
                         "This instance ('{}') was issued a certificate with issuer '{issuer_dn}' and serial number 0x{}.",
-                        self.app_config.context.as_ref().map(|context_config|context_config.get_kubernetes_context()).unwrap_or("(no k8s context detected)".to_string()),
+                        self.app_config
+                            .context
+                            .as_ref()
+                            .map(|context_config| context_config.get_kubernetes_context())
+                            .unwrap_or("(no k8s context detected)".to_string()),
                         signing_cert.get_serial_number().to_hex(),
                     );
                 }

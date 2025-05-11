@@ -24,28 +24,28 @@ upkit_common = { workspace = true, features = []  }
 upkit_leafops = { workspace = true, features = [] }
 
 # Async and concurrency
-tokio = { version = "1", default-features = false, features = ["rt-multi-thread", "macros", "signal"] }
+tokio = { version = "1.45.0", default-features = false, features = ["rt-multi-thread", "macros", "signal"] }
 crossbeam-skiplist = { workspace = true, features = [] }
-futures = { version = "0.3", default-features = false, features = ["std", "async-await"] }
+futures = { version = "0.3.31", default-features = false, features = ["std", "async-await"] }
 
 # Logging and tracing
 log = { workspace = true, features = [] }
 env_logger = { workspace = true, features = [] }
 
 # Config and platform info
-config = { version = "0.15", default-features = false, features = ["json"] }
-cgroups-rs = "0.3"
+config = { version = "0.15.11", default-features = false, features = ["json"] }
+cgroups-rs = "0.3.4"
 
 # REST API
-actix-web = { version = "4.6", default-features = false, features = ["macros", "http2", "compress-brotli"] }
-utoipa = { version = "5", features = ["actix_extras"] }
-serde = { version = "1.0", default-features = false, features = ["std"] }
-serde_json = "1.0"
+actix-web = { version = "4.10.2", default-features = false, features = ["macros", "http2", "compress-brotli"] }
+utoipa = { version = "5.3.1", features = ["actix_extras"] }
+serde = { version = "1.0.219", default-features = false, features = ["std"] }
+serde_json = "1.0.140"
 #serde_with = { version = "3.11", default-features = true, features = ["base64"] }
 
 #chrono = { version = "0.4", default-features = false, features = ["alloc", "now"] }
-sntpc = { version = "0.5", default-features = false, features = ["std", "tokio-socket"] }
+sntpc = { version = "0.5.2", default-features = false, features = ["std", "tokio-socket"] }
 
 [dev-dependencies]
 # HTTP client lib used in examples and tests
-ureq = { version = "3.0", default-features = true, features = [] }
+ureq = { version = "3.0.11", default-features = true, features = [] }

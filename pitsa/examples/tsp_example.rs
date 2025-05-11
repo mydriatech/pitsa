@@ -17,8 +17,8 @@
 
 //! Example of using the Time-Stamp protocol over HTTP
 
-use tyst::encdec::hex::ToHex;
 use tyst::Tyst;
+use tyst::encdec::hex::ToHex;
 use upkit_common::x509::cert::parse::CertificateParser;
 use upkit_common::x509::tsp::build::TimeStampReq;
 use upkit_common::x509::tsp::parse::TimeStampRespParser;
@@ -89,7 +89,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let encodede_certificates = time_stamp_token.get_certificates();
         if encodede_certificates.is_empty() {
             if cert_req {
-                println!("  No certificate were present in the response, even though this was requested!");
+                println!(
+                    "  No certificate were present in the response, even though this was requested!"
+                );
             } else {
                 println!("  No certificate were present in the response.");
             }

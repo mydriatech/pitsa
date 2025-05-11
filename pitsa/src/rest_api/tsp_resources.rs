@@ -19,13 +19,13 @@
 //! [RFC3161 3.4](https://www.rfc-editor.org/rfc/rfc3161#section-3.4).
 
 use super::AppState;
-use actix_web::error;
-use actix_web::post;
-use actix_web::web;
 use actix_web::Error;
 use actix_web::HttpRequest;
 use actix_web::HttpResponse;
 use actix_web::Result;
+use actix_web::error;
+use actix_web::post;
+use actix_web::web;
 use futures::StreamExt;
 
 const CONTENT_TYPE_TS_QUERY: &str = "application/timestamp-query";

@@ -18,8 +18,8 @@
 //! Parsing of configuration for the time source.
 
 use super::AppConfigDefaults;
-use config::builder::BuilderState;
 use config::ConfigBuilder;
+use config::builder::BuilderState;
 use serde::Deserialize;
 use serde::Serialize;
 use std::str::FromStr;

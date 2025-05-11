@@ -17,10 +17,10 @@
 
 //! Network Time Protocol (NTP) client abstraction.
 
-use sntpc::get_time;
 use sntpc::NtpContext;
 pub use sntpc::NtpResult;
 use sntpc::StdTimestampGen;
+use sntpc::get_time;
 use std::net::SocketAddr;
 use std::net::ToSocketAddrs;
 use std::sync::Arc;

@@ -20,10 +20,10 @@
 mod tsp_resources;
 
 use actix_web::http::header::ContentType;
-use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{App, HttpResponse, HttpServer, Responder, get, web};
 use std::sync::Arc;
-use tyst_api_rest_health::health_resources;
 use tyst_api_rest_health::AppHealth;
+use tyst_api_rest_health::health_resources;
 use utoipa::OpenApi;
 
 use crate::TimeStamper;

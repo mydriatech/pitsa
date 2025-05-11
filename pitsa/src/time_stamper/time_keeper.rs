@@ -23,8 +23,8 @@ mod ntp_client;
 use self::local_system_time::LocalSystemTime;
 use self::ntp_client::NtpClient;
 use sntpc::NtpResult;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 
 /* Keeper of current time with accuracy measurements.
 

@@ -104,7 +104,7 @@ impl TimeStamper {
                     &[format!(
                         "Message imprint digest length ({actual} bytes) does not match the claimed algorithm's ({expected} bytes)."
                     )],
-                    &Some(PkiFailureInfo::BadDataFormat)
+                    &Some(PkiFailureInfo::BadDataFormat),
                 );
             }
             // Assert that message digest algo is allowed by configuration
@@ -113,8 +113,10 @@ impl TimeStamper {
                 && !self.allowed_digest_oids.contains(&imprint_digest_oid)
             {
                 return TimeStampResp::with_rejection(
-                    &[format!("Message digest algorithm '{imprint_digest_oid}' in message imprint is not allowed.")], 
-                    &Some(PkiFailureInfo::BadAlgo)
+                    &[format!(
+                        "Message digest algorithm '{imprint_digest_oid}' in message imprint is not allowed."
+                    )],
+                    &Some(PkiFailureInfo::BadAlgo),
                 );
             }
         } else {
