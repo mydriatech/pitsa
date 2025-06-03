@@ -119,7 +119,7 @@ app:
     enprov:
       # Certificate Management Protocol (CMP) provider
       provider: cmp
-      template: timestamping
+      template: tsu
       identity:
         - name: common_name
           value: The greatest little TSA unit
