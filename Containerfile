@@ -9,7 +9,7 @@ RUN \
     mv target/x86_64-unknown-linux-musl/release/pitsa.xz pitsa.xz && \
     mkdir -p /work/data && \
     ./bin/extract-third-party-licenses.sh && \
-    tar cJf licenses.tar.xz licenses/
+    XZ_OPT='-9' tar cJf licenses.tar.xz licenses/
 
 FROM ghcr.io/mydriatech/the-ground-up:1.0.0 as tgu
 
