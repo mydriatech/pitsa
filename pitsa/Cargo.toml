@@ -34,7 +34,7 @@ env_logger = { workspace = true, features = [] }
 
 # Config and platform info
 config = { version = "0.15.11", default-features = false, features = ["json"] }
-cgroups-rs = "0.3.4"
+cgroups-rs = "0.4.0"
 
 # REST API
 actix-web = { version = "4.10.2", default-features = false, features = ["macros", "http2", "compress-brotli"] }
