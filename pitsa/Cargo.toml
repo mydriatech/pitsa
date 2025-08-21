@@ -44,7 +44,7 @@ serde_json = "1.0.140"
 #serde_with = { version = "3.11", default-features = true, features = ["base64"] }
 
 #chrono = { version = "0.4", default-features = false, features = ["alloc", "now"] }
-sntpc = { version = "0.5.2", default-features = false, features = ["std", "tokio-socket"] }
+sntpc = { version = "0.6.0", default-features = false, features = ["std", "tokio-socket"] }
 
 [dev-dependencies]
 # HTTP client lib used in examples and tests

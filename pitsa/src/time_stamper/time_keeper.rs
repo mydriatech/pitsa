@@ -154,17 +154,17 @@ impl TimeKeeper {
     /// Return the current time in microseconds with accuracy measurement.
     pub async fn get_epoch_time_with_accuracy_micros(&self) -> Option<(u64, u64)> {
         let mut res = None;
-        if self.ntp_query_for_every_request {
-            if let Some(ntp_time) = self.ntp_client.as_ref().unwrap().request_ntp_time().await {
-                // https://datatracker.ietf.org/doc/html/rfc4330#section-3 NTPv4 Timestamp Format
-                let epoch_micros = Self::get_epoch_micros_from_ntp_time(&ntp_time);
-                let precision_micros = Self::get_precision_micros_from_ntp_time(&ntp_time);
-                // Accuracy is also affected by the round trip time
-                // This must however have been measured by the local time source and is not really reliable
-                // Adding the full round trip time is probably not a bad idea to avoid lying about the time.
-                let accuracy_micros = precision_micros + ntp_time.roundtrip();
-                res = Some((epoch_micros, accuracy_micros));
-            }
+        if self.ntp_query_for_every_request
+            && let Some(ntp_time) = self.ntp_client.as_ref().unwrap().request_ntp_time().await
+        {
+            // https://datatracker.ietf.org/doc/html/rfc4330#section-3 NTPv4 Timestamp Format
+            let epoch_micros = Self::get_epoch_micros_from_ntp_time(&ntp_time);
+            let precision_micros = Self::get_precision_micros_from_ntp_time(&ntp_time);
+            // Accuracy is also affected by the round trip time
+            // This must however have been measured by the local time source and is not really reliable
+            // Adding the full round trip time is probably not a bad idea to avoid lying about the time.
+            let accuracy_micros = precision_micros + ntp_time.roundtrip();
+            res = Some((epoch_micros, accuracy_micros));
         }
         if res.is_none() {
             res = self.local_system_time.get_epoch_time_with_accuracy_micros();
